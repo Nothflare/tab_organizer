@@ -3,10 +3,11 @@ import type { Settings } from "./types"
 const STORAGE_KEY = "tab_organizer_settings"
 
 const defaultSettings: Settings = {
-  apiEndpoint: "https://api.openai.com/v1",
+  apiEndpoint: "hhttps://openrouter.ai/api/v1",
   apiKey: "",
-  model: "gpt-4o",
-  debugMode: false
+  model: "x-ai/grok-4.1-fast",
+  debugMode: false,
+  collapseGroups: true
 }
 
 export async function getSettings(): Promise<Settings> {

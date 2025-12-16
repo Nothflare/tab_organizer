@@ -36,7 +36,7 @@ const handler: PlasmoMessaging.MessageHandler<OrganizeRequest, OrganizeResponse>
 
     onDebug("Starting organization...")
 
-    // Step 1: Get all tabs
+    // Step 1: Get all tabs and the active tab ID (before any modifications)
     onDebug("Fetching tabs...")
     const tabs = await getAllTabs()
     onDebug(`Found ${tabs.length} tabs`)
@@ -44,6 +44,11 @@ const handler: PlasmoMessaging.MessageHandler<OrganizeRequest, OrganizeResponse>
     if (tabs.length === 0) {
       return res.send({ success: false, error: "No tabs found", debug: debugLog })
     }
+
+    // Get the active tab ID before any changes
+    const [activeTab] = await chrome.tabs.query({ active: true, currentWindow: true })
+    const activeTabId = activeTab?.id
+    onDebug(`Active tab ID: ${activeTabId ?? "none"}`)
 
     // Step 2: Ungroup all existing groups first
     onDebug("Ungrouping existing groups...")
@@ -54,9 +59,15 @@ const handler: PlasmoMessaging.MessageHandler<OrganizeRequest, OrganizeResponse>
     const groups = await organizeTabsWithAI(tabs, settings, onDebug)
     onDebug(`AI returned ${groups.length} groups`)
 
-    // Step 4: Create new groups
+    // Step 4: Create new groups with correct collapsed state
     onDebug("Creating groups...")
-    await createTabGroups(groups)
+    if (settings.collapseGroups) {
+      onDebug("Collapse others enabled, active tab's group will stay expanded")
+    }
+    await createTabGroups(groups, {
+      collapseOthers: settings.collapseGroups,
+      activeTabId
+    })
 
     onDebug("Done!")
     res.send({ success: true, groupCount: groups.length, debug: debugLog })

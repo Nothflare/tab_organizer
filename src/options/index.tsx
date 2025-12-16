@@ -2,16 +2,16 @@ import { useEffect, useState } from "react"
 import { getSettings, saveSettings } from "~/lib/storage"
 import type { Settings } from "~/lib/types"
 import { Button } from "~/components/ui/button"
+import { Switch } from "~/components/ui/switch"
 import "~/style.css"
-
-const PRESET_MODELS = ["gpt-4o", "gpt-4o-mini", "gpt-4-turbo", "gpt-3.5-turbo"]
 
 function Options() {
   const [settings, setSettings] = useState<Settings>({
     apiEndpoint: "https://api.openai.com/v1",
     apiKey: "",
     model: "gpt-4o",
-    debugMode: false
+    debugMode: false,
+    collapseGroups: false
   })
   const [showKey, setShowKey] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -73,38 +73,41 @@ function Options() {
 
           <div>
             <label className="block text-sm font-medium mb-1.5">Model</label>
-            <select
-              value={settings.model}
-              onChange={(e) => updateSetting("model", e.target.value)}
-              className="w-full h-10 px-3 bg-zinc-900 border border-zinc-800 rounded-md text-sm focus:outline-none focus:border-zinc-700"
-            >
-              {PRESET_MODELS.map((model) => (
-                <option key={model} value={model}>
-                  {model}
-                </option>
-              ))}
-            </select>
-            <p className="text-xs text-zinc-500 mt-1">
-              Or type a custom model name
-            </p>
             <input
               type="text"
               value={settings.model}
               onChange={(e) => updateSetting("model", e.target.value)}
-              placeholder="Custom model name"
-              className="w-full h-10 px-3 mt-2 bg-zinc-900 border border-zinc-800 rounded-md text-sm focus:outline-none focus:border-zinc-700"
+              placeholder="gpt-4o"
+              className="w-full h-10 px-3 bg-zinc-900 border border-zinc-800 rounded-md text-sm focus:outline-none focus:border-zinc-700"
             />
+            <p className="text-xs text-zinc-500 mt-1">
+              e.g. openai/gpt-5-mini, x-ai/grok-4.1-fast, anthropic/claude-sonnet-4.5, etc.
+            </p>
           </div>
 
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
+          <div className="flex items-start gap-3">
+            <Switch
+              id="collapseGroups"
+              checked={settings.collapseGroups}
+              onCheckedChange={(checked) => updateSetting("collapseGroups", checked)}
+            />
+            <div className="flex flex-col gap-0.5">
+              <label htmlFor="collapseGroups" className="text-sm cursor-pointer">
+                Collapse other groups after organizing
+              </label>
+              <p className="text-xs text-zinc-500">
+                Keep only the active tab's group expanded for a cleaner view
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Switch
               id="debug"
               checked={settings.debugMode}
-              onChange={(e) => updateSetting("debugMode", e.target.checked)}
-              className="w-4 h-4 rounded border-zinc-700 bg-zinc-900"
+              onCheckedChange={(checked) => updateSetting("debugMode", checked)}
             />
-            <label htmlFor="debug" className="text-sm">
+            <label htmlFor="debug" className="text-sm cursor-pointer">
               Enable debug logging
             </label>
           </div>

@@ -3,6 +3,7 @@ export interface Settings {
   apiKey: string
   model: string
   debugMode: boolean
+  collapseGroups: boolean
 }
 
 export interface TabInfo {

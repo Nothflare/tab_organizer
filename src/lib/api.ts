@@ -13,7 +13,7 @@ Common groupings:
 
 Guidelines:
 - Group by task/purpose, not by domain
-- Always prefix group names with a relevant emoji
+- ALWAYS prefix group names with a relevant emoji
 - Use descriptive group names based on actual content
 - Assign distinct colors to each group for visual clarity
 - Every tab must be assigned to exactly one group

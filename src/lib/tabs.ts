@@ -30,15 +30,32 @@ export async function ungroupAllTabs(): Promise<void> {
   }
 }
 
-export async function createTabGroups(groups: TabGroup[]): Promise<void> {
+export interface CreateGroupsOptions {
+  collapseOthers?: boolean
+  activeTabId?: number
+}
+
+export async function createTabGroups(
+  groups: TabGroup[],
+  options: CreateGroupsOptions = {}
+): Promise<void> {
+  const { collapseOthers = false, activeTabId } = options
+
   for (const group of groups) {
     if (group.tabIds.length === 0) continue
 
     const groupId = await chrome.tabs.group({ tabIds: group.tabIds })
+
+    // Determine if this group should be collapsed
+    // If collapseOthers is enabled, collapse all groups except the one containing the active tab
+    const containsActiveTab = activeTabId !== undefined && group.tabIds.includes(activeTabId)
+    const shouldCollapse = collapseOthers && !containsActiveTab
+
     await chrome.tabGroups.update(groupId, {
       title: group.name,
       color: group.color,
-      collapsed: false
+      collapsed: shouldCollapse
     })
   }
 }
+
