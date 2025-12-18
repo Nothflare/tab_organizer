@@ -76,8 +76,9 @@ function parseResponse(text: string, validTabIds: Set<number>): TabGroup[] {
 export async function organizeTabsWithAI(
   tabs: TabInfo[],
   settings: Settings,
-  onDebug?: (msg: string) => void
+  options?: { signal?: AbortSignal; onDebug?: (msg: string) => void }
 ): Promise<TabGroup[]> {
+  const { signal, onDebug } = options ?? {}
   const { apiEndpoint, apiKey, model } = settings
   const validTabIds = new Set(tabs.map((t) => t.id))
 
@@ -100,7 +101,8 @@ export async function organizeTabsWithAI(
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`
     },
-    body: JSON.stringify(requestBody)
+    body: JSON.stringify(requestBody),
+    signal
   })
 
   if (!response.ok) {
