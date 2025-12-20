@@ -11,7 +11,8 @@ function Options() {
     apiKey: "",
     model: "gpt-4o",
     debugMode: false,
-    collapseGroups: false
+    collapseGroups: false,
+    reasoningEffort: "off"
   })
   const [showKey, setShowKey] = useState(false)
   const [saved, setSaved] = useState(false)
@@ -82,6 +83,23 @@ function Options() {
             />
             <p className="text-xs text-zinc-500 mt-1">
               e.g. openai/gpt-5-mini, x-ai/grok-4.1-fast, anthropic/claude-sonnet-4.5, etc.
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1.5">Reasoning Effort</label>
+            <select
+              value={settings.reasoningEffort}
+              onChange={(e) => updateSetting("reasoningEffort", e.target.value as Settings["reasoningEffort"])}
+              className="w-full h-10 px-3 bg-zinc-900 border border-zinc-800 rounded-md text-sm focus:outline-none focus:border-zinc-700"
+            >
+              <option value="off">Off</option>
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+            <p className="text-xs text-zinc-500 mt-1">
+              For thinking models (o1, o3, etc.). Ignored by other models.
             </p>
           </div>
 

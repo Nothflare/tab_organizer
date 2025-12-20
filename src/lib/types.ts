@@ -4,6 +4,7 @@ export interface Settings {
   model: string
   debugMode: boolean
   collapseGroups: boolean
+  reasoningEffort: "off" | "low" | "medium" | "high" // OpenAI-style for thinking models
 }
 
 export interface TabInfo {

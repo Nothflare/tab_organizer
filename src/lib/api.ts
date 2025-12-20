@@ -86,10 +86,10 @@ export async function organizeTabsWithAI(
   options?: { signal?: AbortSignal; onDebug?: (msg: string) => void }
 ): Promise<TabGroup[]> {
   const { signal, onDebug } = options ?? {}
-  const { apiEndpoint, apiKey, model } = settings
+  const { apiEndpoint, apiKey, model, reasoningEffort } = settings
   const mapping = createTabMapping(tabs)
 
-  const requestBody = {
+  const requestBody: Record<string, unknown> = {
     model,
     messages: [
       { role: "system", content: SYSTEM_PROMPT },
@@ -98,9 +98,17 @@ export async function organizeTabsWithAI(
     temperature: 0.3
   }
 
+  // Add reasoning_effort for thinking models (ignored by non-thinking models)
+  if (reasoningEffort && reasoningEffort !== "off") {
+    requestBody.reasoning_effort = reasoningEffort
+  }
+
   onDebug?.(`Request to ${apiEndpoint}/chat/completions`)
   onDebug?.(`Model: ${model}`)
   onDebug?.(`Tabs: ${tabs.length}`)
+  if (reasoningEffort && reasoningEffort !== "off") {
+    onDebug?.(`Reasoning: ${reasoningEffort}`)
+  }
 
   const response = await fetch(`${apiEndpoint}/chat/completions`, {
     method: "POST",
