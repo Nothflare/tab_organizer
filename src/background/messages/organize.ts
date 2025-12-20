@@ -52,14 +52,6 @@ async function executeOrganizeTask(
       return
     }
 
-    // Get active tab before modifications
-    const [activeTab] = await chrome.tabs.query({
-      active: true,
-      currentWindow: true
-    })
-    const activeTabId = activeTab?.id
-    onDebug(`Active tab ID: ${activeTabId ?? "none"}`)
-
     if (signal.aborted || await isCancelled()) return
 
     // Phase 2: Ungroup existing
@@ -83,8 +75,15 @@ async function executeOrganizeTask(
     // Phase 4: Create groups
     await setTaskPhase("creating-groups")
     onDebug("Creating groups...")
+
+    // Get active tab now (not earlier) since user may have switched during AI call
+    const [activeTab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true
+    })
+    const activeTabId = activeTab?.id
     if (settings.collapseGroups) {
-      onDebug("Collapse others enabled, active tab's group will stay expanded")
+      onDebug(`Collapse others enabled, active tab ${activeTabId ?? "none"} group stays expanded`)
     }
     await createTabGroups(groups, {
       collapseOthers: settings.collapseGroups,
