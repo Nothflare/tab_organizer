@@ -3,5 +3,6 @@ build/
 .plasmo/
 *.log
 docs/plans/
+docs/dev/
 .idea/
 .serena/

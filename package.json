@@ -2,7 +2,7 @@
   "name": "tab-organizer",
   "displayName": "Tab Organizer",
   "version": "1.0.0",
-  "description": "AI-powered tab organization",
+  "description": "LLM groups your tabs by what you're actually doing. BYOK.",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build"
