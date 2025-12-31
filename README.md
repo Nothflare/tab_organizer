@@ -2,6 +2,18 @@
 
 AI-powered Chrome extension that automatically organizes your browser tabs into logical groups.
 
+<p align="center">
+  <img src="docs/media/promo-organize.png" alt="One-click tab organization" width="640">
+</p>
+
+<p align="center">
+  <img src="docs/media/promo-settings.png" alt="Bring your own API key" width="640">
+</p>
+
+## Demo
+
+<video src="https://github.com/Nothflare/tab_organizer/raw/main/docs/media/demo.mp4" controls width="640"></video>
+
 ## Features
 
 - **AI-Powered Grouping**: Uses OpenAI-compatible APIs to intelligently categorize tabs by content
