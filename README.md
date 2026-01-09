@@ -12,7 +12,7 @@ AI-powered Chrome extension that automatically organizes your browser tabs into 
 
 ## Demo
 
-<video src="https://github.com/Nothflare/tab_organizer/raw/main/docs/media/demo.mp4" controls width="640"></video>
+https://github.com/user-attachments/assets/fe4dd323-b359-41a7-a9b8-2bd724a5f9cd
 
 ## Features
 
